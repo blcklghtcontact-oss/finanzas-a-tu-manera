@@ -181,6 +181,25 @@ footer{border-top:1px solid var(--line);padding-block:1.5rem 2rem;color:var(--mu
 footer .wrap{display:flex;flex-direction:column;gap:.5rem}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
+
+/* Evaluación heurística */
+.crit{border:1px solid var(--line);border-radius:var(--r);padding:1.1rem;background:var(--surface);margin:0;display:flex;flex-direction:column;gap:.7rem}
+.crit legend{padding:0 .3rem;font-family:var(--f-display);font-size:1.15rem;font-weight:700}
+.crit .desc{color:var(--muted)}
+.scale{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem}
+.scale label{display:flex;flex-direction:column;align-items:center;gap:.15rem;border:2px solid var(--line);border-radius:8px;padding:.6rem .4rem;cursor:pointer;text-align:center;background:var(--bg)}
+.scale input{position:absolute;opacity:0;pointer-events:none}
+.scale .n{font-family:var(--f-mono);font-size:1.4rem;font-weight:600}
+.scale small{color:var(--muted);font-size:.82rem;line-height:1.2}
+.scale input:checked+label{border-color:var(--teal);background:var(--surface-2)}
+.scale input:focus-visible+label{outline:3px solid var(--focus);outline-offset:2px}
+.crit textarea{min-height:4.5rem}
+.evalbar{position:sticky;bottom:env(safe-area-inset-bottom,0px);background:var(--deep);color:var(--on-deep);border-radius:var(--r);padding:.9rem 1rem;display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center;justify-content:space-between}
+.evalbar .avg{font-family:var(--f-mono);font-size:1.5rem;font-weight:600}
+.evalbar .btn{background:var(--gold);border-color:var(--gold);color:#13262b}
+.thanks{border:2px solid var(--ok);border-radius:var(--r);padding:1.2rem;background:var(--surface)}
+.cta-eval{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between;margin-top:2rem;padding:1.2rem;border-radius:var(--r);background:var(--surface-2);border:1px solid var(--line)}
+
 @media (max-width:760px){
   .hero,.sim{grid-template-columns:minmax(0,1fr)}
   .fig .row{grid-template-columns:6.5rem minmax(0,1fr) 5rem}
@@ -247,6 +266,7 @@ footer .wrap{display:flex;flex-direction:column;gap:.5rem}
         <div><h3>Sin castigo por equivocarte</h3><p>Cada respuesta incorrecta te explica por qué, y puedes intentarlo otra vez.</p></div>
         <div><h3>Funciona con teclado</h3><p>Usa Tab para avanzar, Enter para elegir. Compatible con lectores de pantalla.</p></div>
       </div>
+      <div class="cta-eval"><div><h3>¿Ya probaste el curso?</h3><p class="status">Ayúdanos con la prueba de heurística: son 4 preguntas.</p></div><a class="btn" href="#evaluar" style="text-decoration:none">Evaluar el recurso</a></div>
     </section>
 
     <!-- MÓDULO (plantilla única que se llena con datos) -->
@@ -366,6 +386,31 @@ footer .wrap{display:flex;flex-direction:column;gap:.5rem}
       </div>
     </section>
 
+    <!-- EVALUAR -->
+    <section id="v-evaluar" aria-labelledby="h-ev" hidden>
+      <p class="eyebrow">Prueba de heurística</p>
+      <h2 id="h-ev">Evalúa este recurso</h2>
+      <p class="read" style="margin-block:.6rem 1.2rem;color:var(--muted)">Después de usar el curso, califica cada criterio: Pobre (6), Más trabajo (8) o Prometedor (10), y dinos qué cambiarías. Tus respuestas solo las ve el equipo que creó el recurso.</p>
+      <form id="evalform" class="stack" novalidate>
+        <div class="panel">
+          <label for="ev-nombre"><b>Tu nombre</b> <span class="status">(opcional)</span></label>
+          <input id="ev-nombre" type="text" autocomplete="name" style="display:block;width:100%;max-width:24rem;margin-top:.4rem;padding:.6rem;border:2px solid var(--line);border-radius:8px;background:var(--bg)">
+        </div>
+        <div id="ev-crits" class="stack"></div>
+        <p id="ev-error" class="feedback no" role="alert" hidden></p>
+        <div class="evalbar">
+          <div><span class="eyebrow" style="color:inherit;opacity:.8">Tu promedio</span><br><span class="avg" id="ev-avg">— / 10</span></div>
+          <button class="btn" type="submit" id="ev-send">Enviar evaluación</button>
+        </div>
+      </form>
+      <div id="ev-thanks" class="thanks" hidden tabindex="-1">
+        <h3>Gracias por evaluar Finanzas a tu manera</h3>
+        <p style="margin-top:.5rem">Tu evaluación se envió al equipo. Tu promedio fue <b class="num" id="ev-final"></b>.</p>
+        <div class="ctrl-row"><button class="btn ghost" type="button" id="ev-again">Enviar otra evaluación</button><a class="btn" href="#inicio" style="text-decoration:none">Volver al curso</a></div>
+      </div>
+      <iframe name="ev-sink" id="ev-sink" title="Envío de la evaluación" hidden></iframe>
+    </section>
+
   </div>
 </main>
 
@@ -481,12 +526,12 @@ var COLORS={teal:"var(--teal)",slate:"var(--slate)",rust:"var(--rust)",plum:"var
 var state={fmt:store.get("fmt","leer"),done:store.get("done",{}),step:{},level:{}};
 
 /* ---------- Navegación ---------- */
-var NAV=[["inicio","Inicio"]].concat(MODS.map(function(m){return [m.id,m.n+". "+m.titulo]})).concat([["simulador","Simulador"],["glosario","Glosario"],["bitacora","Bitácora"]]);
+var NAV=[["inicio","Inicio"]].concat(MODS.map(function(m){return [m.id,m.n+". "+m.titulo]})).concat([["simulador","Simulador"],["glosario","Glosario"],["bitacora","Bitácora"],["evaluar","Evalúa"]]);
 $("#navlist").innerHTML=NAV.map(function(n){return '<li><a href="#'+n[0]+'" data-r="'+n[0]+'">'+n[1]+'</a></li>'}).join("");
 
 function route(){
   var h=(location.hash||"#inicio").slice(1); var mod=MODS.filter(function(m){return m.id===h})[0];
-  if(!mod && ["inicio","simulador","glosario","bitacora"].indexOf(h)<0) h="inicio";
+  if(!mod && ["inicio","simulador","glosario","bitacora","evaluar"].indexOf(h)<0) h="inicio";
   $$("main section").forEach(function(s){s.hidden=true});
   if(mod){ $("#v-modulo").hidden=false; renderMod(mod); } else { $("#v-"+h).hidden=false; }
   if(h==="inicio") renderHome();
@@ -712,6 +757,43 @@ $("#bit-save").addEventListener("click",function(){
   var ok=store.set("bitacora",all);
   $("#bit-status").textContent= ok?"Guardado en este navegador.":"No se pudo guardar en este navegador (modo privado o almacenamiento bloqueado). Copia tu texto antes de salir.";
 });
+
+
+/* ---------- Evaluación heurística (Google Form) ---------- */
+var FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSdW3SjRqA6rPfgenri77wbhgPbxxQWjOzSTd6KXVXNrV86MOA/formResponse";
+var EV_NOMBRE="entry.2039103874";
+var CRIT=[
+  {k:"orden",t:"Orden",d:"La información apareció en una secuencia que mantuvo mi atención.",r:"entry.799246249",c:"entry.917100194"},
+  {k:"nav",t:"Navegación",d:"Siempre me sentí con el control y conocimiento de lo que estaba pasando.",r:"entry.1565052229",c:"entry.66538469"},
+  {k:"inter",t:"Interacción",d:"Sentí un nivel de conexión con la forma en la que obtenía la información.",r:"entry.145725627",c:"entry.1081636963"},
+  {k:"cont",t:"Contenido",d:"Entendí el tema, recibí la información de manera clara y coherente.",r:"entry.1359685931",c:"entry.1700201844"}
+];
+var ESCALA=[[6,"Pobre","6 - Pobre"],[8,"Más trabajo","8 - Más trabajo"],[10,"Prometedor","10 - Prometedor"]];
+$("#ev-crits").innerHTML=CRIT.map(function(c,ci){
+  return '<fieldset class="crit"><legend>'+(ci+1)+'. '+c.t+'</legend><p class="desc">'+c.d+'</p><div class="scale" role="radiogroup" aria-label="Calificación de '+c.t+'">'+
+    ESCALA.map(function(e){var id="ev-"+c.k+"-"+e[0];return '<span><input type="radio" name="ev-'+c.k+'" id="'+id+'" value="'+e[0]+'"><label for="'+id+'"><span class="n">'+e[0]+'</span><small>'+e[1]+'</small></label></span>'}).join("")+
+    '</div><label for="ev-'+c.k+'-c" class="status">¿Qué cambiarías? (opcional)</label><textarea id="ev-'+c.k+'-c"></textarea></fieldset>';
+}).join("");
+function evVals(){return CRIT.map(function(c){var x=$('input[name="ev-'+c.k+'"]:checked');return x?+x.value:null})}
+function evAvg(){var v=evVals().filter(function(x){return x!=null});return v.length?v.reduce(function(a,b){return a+b},0)/v.length:null}
+$("#evalform").addEventListener("change",function(){var a=evAvg(); $("#ev-avg").textContent=a==null?"— / 10":a.toFixed(1)+" / 10"; $("#ev-error").hidden=true;});
+$("#evalform").addEventListener("submit",function(e){
+  e.preventDefault();
+  var vals=evVals(), falt=CRIT.filter(function(c,i){return vals[i]==null}).map(function(c){return c.t});
+  if(falt.length){var er=$("#ev-error"); er.textContent="Falta calificar: "+falt.join(", ")+". Elige 6, 8 o 10 en cada criterio."; er.hidden=false; $('input[name="ev-'+CRIT[vals.indexOf(null)].k+'"]').focus(); return;}
+  var f=document.createElement("form"); f.method="POST"; f.action=FORM_URL; f.target="ev-sink"; f.hidden=true;
+  var add=function(n,v){var i=document.createElement("input");i.type="hidden";i.name=n;i.value=v;f.appendChild(i)};
+  add(EV_NOMBRE,$("#ev-nombre").value.trim());
+  CRIT.forEach(function(c,i){var label=ESCALA.filter(function(x){return x[0]===vals[i]})[0][2]; add(c.r,label); add(c.c,$("#ev-"+c.k+"-c").value.trim());});
+  document.body.appendChild(f);
+  var btn=$("#ev-send"); btn.disabled=true; btn.textContent="Enviando…";
+  var done=false, finish=function(){ if(done)return; done=true; f.remove();
+    $("#ev-final").textContent=evAvg().toFixed(1)+" / 10"; $("#evalform").hidden=true; var t=$("#ev-thanks"); t.hidden=false; t.focus();
+    btn.disabled=false; btn.textContent="Enviar evaluación"; };
+  $("#ev-sink").onload=finish; setTimeout(finish,4000);
+  f.submit();
+});
+$("#ev-again").addEventListener("click",function(){$("#evalform").reset(); $("#ev-avg").textContent="— / 10"; $("#ev-thanks").hidden=true; $("#evalform").hidden=false; $("#ev-nombre").focus();});
 
 /* ---------- Accesibilidad ---------- */
 var root=document.documentElement, prefs=store.get("a11y",{scale:1,dark:null,hc:false,sp:false,mo:false});
