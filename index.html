@@ -1,0 +1,742 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Curso digital interactivo y accesible de cultura financiera: presupuesto, ahorro, crédito e inversión, en varios formatos.">
+<title>Finanzas a tu manera</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap">
+<style>
+/* Layout: una sola columna de lectura (~65ch) con barra de accesibilidad fija arriba;
+   cada módulo es una "libreta" con pasos numerados y formatos en pestañas. */
+:root{
+  --bg:#f3f6f5; --surface:#ffffff; --surface-2:#e7efed; --ink:#0f2b33; --muted:#4b6268;
+  --line:#c9d8d5; --deep:#0b3c49; --teal:#0b7a70; --gold:#f2a33a; --rust:#b23d0c; --slate:#3d5a80; --plum:#6b4c7a;
+  --on-deep:#eef7f5; --ok:#1d7a3e; --warn:#a15c00; --bad:#b42318; --focus:#f2a33a;
+  --f-display:"Fraunces", Georgia, "Times New Roman", serif;
+  --f-body:"Atkinson Hyperlegible Next","Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"Atkinson Hyperlegible Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --scale:1; --track:0; --word:0; --lead:1.6;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0c1a1e; --surface:#13262b; --surface-2:#1a3238; --ink:#e6f1ef; --muted:#9db5b3;
+  --line:#2b4a51; --deep:#08303a; --teal:#3fc1b2; --gold:#f5b65a; --rust:#f08a5d; --slate:#8fb0dc; --plum:#c3a3d6;
+  --on-deep:#e6f1ef; --ok:#5fd48a; --warn:#f5b65a; --bad:#ff8a7a; --focus:#f5b65a; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0c1a1e; --surface:#13262b; --surface-2:#1a3238; --ink:#e6f1ef; --muted:#9db5b3;
+  --line:#2b4a51; --deep:#08303a; --teal:#3fc1b2; --gold:#f5b65a; --rust:#f08a5d; --slate:#8fb0dc; --plum:#c3a3d6;
+  --on-deep:#e6f1ef; --ok:#5fd48a; --warn:#f5b65a; --bad:#ff8a7a; --focus:#f5b65a; color-scheme:dark }
+:root[data-contrast="high"]{
+  --bg:#ffffff; --surface:#ffffff; --surface-2:#ffffff; --ink:#000000; --muted:#000000; --line:#000000;
+  --deep:#000000; --teal:#00527a; --gold:#000000; --rust:#8a1c00; --slate:#00326b; --plum:#4b0f6b; --on-deep:#ffffff; --focus:#c40000; color-scheme:light }
+:root[data-theme="dark"][data-contrast="high"]{
+  --bg:#000000; --surface:#000000; --surface-2:#000000; --ink:#ffffff; --muted:#ffffff; --line:#ffffff;
+  --deep:#000000; --teal:#5ff2e4; --gold:#ffe14d; --rust:#ffb08a; --slate:#a8ccff; --plum:#e6c2ff; --on-deep:#ffffff; --focus:#ffe14d; color-scheme:dark }
+
+html{font-size:calc(100% * var(--scale))}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:1.0625rem;line-height:var(--lead);
+  letter-spacing:calc(var(--track) * 1em);word-spacing:calc(var(--word) * 1em)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--deep)}
+*{box-sizing:border-box}
+a{color:var(--teal)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
+.skip{position:absolute;left:-999px;top:0;background:var(--gold);color:#111;padding:.5rem 1rem;z-index:50}
+.skip:focus{left:max(16px,env(safe-area-inset-left,0px))}
+h1,h2,h3{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0;letter-spacing:0}
+h1{font-size:clamp(2rem,6vw,3.1rem)} h2{font-size:clamp(1.5rem,4vw,2rem)} h3{font-size:1.2rem}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit;letter-spacing:inherit}
+.wrap{max-width:62rem;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.read{max-width:65ch}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+/* Barra superior */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--deep);color:var(--on-deep)}
+.top .wrap{display:flex;flex-wrap:wrap;gap:.5rem 1rem;align-items:center;justify-content:space-between;padding-block:.6rem}
+.brand{display:flex;gap:.6rem;align-items:center;color:inherit;text-decoration:none;font-family:var(--f-display);font-weight:700;font-size:1.15rem}
+.coin{width:28px;height:28px;flex:none}
+.a11y{display:flex;flex-wrap:wrap;gap:.35rem}
+.chip{border:1px solid color-mix(in srgb,var(--on-deep) 35%,transparent);background:transparent;color:var(--on-deep);border-radius:999px;padding:.3rem .7rem;font-size:.85rem;cursor:pointer;min-height:36px}
+.chip[aria-pressed="true"]{background:var(--gold);color:#13262b;border-color:var(--gold)}
+.progress-strip{height:6px;background:color-mix(in srgb,var(--on-deep) 20%,transparent)}
+.progress-strip span{display:block;height:100%;background:var(--gold);width:0;transition:width .4s}
+nav.main{background:var(--surface);border-bottom:1px solid var(--line)}
+nav.main ul{list-style:none;margin:0;padding:0;display:flex;gap:.25rem;overflow-x:auto}
+nav.main a{display:block;padding:.75rem .8rem;text-decoration:none;color:var(--muted);white-space:nowrap;border-bottom:3px solid transparent;font-weight:600}
+nav.main a[aria-current="page"]{color:var(--ink);border-color:var(--teal)}
+
+main{padding-block:2rem 4rem}
+section[hidden]{display:none}
+.stack{display:flex;flex-direction:column;gap:1rem}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:1.25rem}
+
+/* Inicio */
+.hero{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:2rem;align-items:center;padding-block:.5rem 1.5rem}
+.hero p.lead{font-size:1.2rem;color:var(--muted);margin-top:.8rem;max-width:50ch}
+.route{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem}
+.route button{display:flex;flex-direction:column;align-items:flex-start;gap:.2rem;text-align:left;border:2px solid var(--line);background:var(--surface);border-radius:var(--r);padding:.8rem;cursor:pointer;min-height:80px}
+.route button[aria-pressed="true"]{border-color:var(--teal);background:var(--surface-2)}
+.route b{font-size:1rem} .route small{color:var(--muted);font-size:.85rem;line-height:1.35}
+.modgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr));gap:1rem;margin-top:1rem}
+.modcard{display:flex;flex-direction:column;gap:.6rem;text-decoration:none;color:var(--on-deep);border-radius:var(--r);padding:1.1rem;min-height:12rem;position:relative}
+.modcard .eyebrow{color:color-mix(in srgb,var(--on-deep) 75%,transparent)}
+.modcard h3{color:var(--on-deep);font-size:1.35rem}
+.modcard .bar{margin-top:auto;height:6px;background:rgba(255,255,255,.25);border-radius:3px;overflow:hidden}
+.modcard .bar span{display:block;height:100%;background:#fff}
+.modcard .meta{font-size:.85rem;color:color-mix(in srgb,var(--on-deep) 85%,transparent)}
+.c-teal{background:var(--teal)} .c-slate{background:var(--slate)} .c-rust{background:var(--rust)} .c-plum{background:var(--plum)}
+:root[data-theme="dark"] .modcard, :root:not([data-theme="light"]) .modcard{}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .modcard h3,:root:not([data-theme="light"]) .modcard{color:#0c1a1e}
+  :root:not([data-theme="light"]) .modcard .eyebrow,:root:not([data-theme="light"]) .modcard .meta{color:#0c1a1e}
+  :root:not([data-theme="light"]) .modcard .bar span{background:#0c1a1e}}
+:root[data-theme="dark"] .modcard, :root[data-theme="dark"] .modcard h3, :root[data-theme="dark"] .modcard .eyebrow, :root[data-theme="dark"] .modcard .meta{color:#0c1a1e}
+:root[data-theme="dark"] .modcard .bar span{background:#0c1a1e}
+:root[data-contrast="high"] .modcard{border:3px solid var(--ink)}
+:root[data-contrast="high"]:not([data-theme="dark"]) .modcard, :root[data-contrast="high"]:not([data-theme="dark"]) .modcard h3,
+:root[data-contrast="high"]:not([data-theme="dark"]) .modcard .eyebrow, :root[data-contrast="high"]:not([data-theme="dark"]) .modcard .meta{color:#ffffff}
+:root[data-contrast="high"]:not([data-theme="dark"]) .modcard .bar span{background:#ffffff}
+.howto{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr));gap:1rem;margin-top:2rem}
+.howto div{border-top:3px solid var(--gold);padding-top:.6rem}
+.howto p{color:var(--muted);font-size:.95rem}
+
+/* Módulo */
+.modhead{display:flex;flex-wrap:wrap;gap:1rem;align-items:end;justify-content:space-between;margin-bottom:1.25rem}
+.steps{display:flex;gap:.4rem;flex-wrap:wrap}
+.steps button{width:2.4rem;height:2.4rem;border-radius:50%;border:2px solid var(--line);background:var(--surface);cursor:pointer;font-family:var(--f-mono);font-weight:600}
+.steps button[aria-current="step"]{border-color:var(--teal);background:var(--teal);color:var(--bg)}
+.steps button.done{border-color:var(--teal);color:var(--teal)}
+.previo{background:var(--surface-2);border-left:4px solid var(--gold);border-radius:6px;padding:1rem}
+.previo label{font-weight:700;display:block;margin-bottom:.4rem}
+.tabs{display:flex;gap:.3rem;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.tabs [role="tab"]{border:0;background:transparent;padding:.6rem .9rem;cursor:pointer;color:var(--muted);font-weight:600;border-bottom:3px solid transparent;min-height:44px}
+.tabs [role="tab"][aria-selected="true"]{color:var(--ink);border-color:var(--teal)}
+.lesson{padding-top:1.2rem}
+.lesson h3{margin-bottom:.6rem}
+.lesson p+p{margin-top:.8rem}
+.term{border:0;background:none;padding:0;color:var(--teal);text-decoration:underline dotted 2px;text-underline-offset:3px;cursor:help;font-weight:700}
+.tip{margin-top:.8rem;padding:.8rem 1rem;border-radius:8px;background:var(--surface-2);font-size:.95rem}
+.tip b{font-family:var(--f-mono);font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);display:block}
+.ctrl-row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin-top:1.2rem}
+.btn{border:2px solid var(--teal);background:var(--teal);color:var(--bg);border-radius:8px;padding:.6rem 1rem;font-weight:700;cursor:pointer;min-height:44px}
+.btn.ghost{background:transparent;color:var(--teal)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.pause{display:flex;gap:1rem;align-items:center;margin-top:1.2rem;padding:1rem;border:2px dashed var(--gold);border-radius:var(--r)}
+.pause .ring{width:3rem;height:3rem;flex:none;border-radius:50%;border:4px solid var(--gold);display:grid;place-items:center;font-family:var(--f-mono);font-weight:600}
+@media (prefers-reduced-motion: no-preference){ :root:not([data-motion="off"]) .pause .ring{animation:breathe 4s ease-in-out infinite} }
+@keyframes breathe{50%{transform:scale(1.15)}}
+
+/* Infografía */
+.fig{display:flex;flex-direction:column;gap:.7rem}
+.fig .row{display:grid;grid-template-columns:8.5rem minmax(0,1fr) 6rem;gap:.6rem;align-items:center}
+.fig .track{height:1.4rem;background:var(--surface-2);border-radius:4px;overflow:hidden}
+.fig .fill{height:100%;border-radius:4px}
+.fig .val{text-align:right}
+.fig figcaption{color:var(--muted);font-size:.9rem}
+.ladder{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.4rem;align-items:end}
+.ladder div{border-radius:6px 6px 0 0;padding:.5rem;color:var(--bg);font-size:.85rem;font-weight:700;display:flex;align-items:flex-end}
+.altbox{font-size:.9rem;color:var(--muted);border-top:1px solid var(--line);padding-top:.6rem}
+
+/* Quiz */
+.levels{display:flex;gap:.4rem;flex-wrap:wrap;margin-block:.6rem 1rem}
+.q fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:.5rem}
+.q legend{font-weight:700;margin-bottom:.6rem;font-size:1.1rem}
+.opt{display:flex;gap:.6rem;align-items:flex-start;border:2px solid var(--line);border-radius:8px;padding:.7rem .8rem;cursor:pointer;background:var(--surface)}
+.opt input{margin-top:.3rem;width:1.1rem;height:1.1rem;accent-color:var(--teal)}
+.opt.right{border-color:var(--ok)} .opt.wrong{border-color:var(--bad)}
+.feedback{margin-top:.8rem;padding:.8rem 1rem;border-radius:8px;border-left:4px solid var(--line);background:var(--surface-2)}
+.feedback.ok{border-color:var(--ok)} .feedback.no{border-color:var(--warn)}
+.feedback strong{display:block}
+
+/* Simulador */
+.sim{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1.25rem}
+.field{display:grid;grid-template-columns:minmax(0,1fr) 8rem;gap:.5rem;align-items:center;padding:.4rem 0;border-bottom:1px solid var(--line)}
+.field label{display:flex;flex-direction:column;line-height:1.3}
+.field label small{color:var(--muted);font-size:.8rem}
+.field input{width:100%;padding:.45rem .5rem;border:2px solid var(--line);border-radius:6px;background:var(--bg);text-align:right;font-family:var(--f-mono)}
+.field select{grid-column:1/-1;padding:.35rem;border:1px solid var(--line);border-radius:6px;background:var(--bg);font-size:.85rem}
+.big{font-family:var(--f-mono);font-size:2rem;font-weight:600}
+.legend{display:flex;gap:1rem;flex-wrap:wrap;font-size:.85rem;color:var(--muted)}
+.legend i{display:inline-block;width:.8rem;height:.8rem;border-radius:2px;margin-right:.3rem;vertical-align:-1px}
+.hints{display:flex;gap:.4rem;flex-wrap:wrap}
+
+/* Glosario y bitácora */
+.gl{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:.8rem}
+.gl dt{font-weight:700;font-family:var(--f-display);font-size:1.1rem}
+.gl dd{margin:0;color:var(--muted)}
+.gl div{border-top:2px solid var(--line);padding-top:.6rem}
+.gl .ex{color:var(--ink);font-size:.92rem;margin-top:.3rem}
+textarea{width:100%;min-height:8rem;padding:.7rem;border:2px solid var(--line);border-radius:8px;background:var(--bg)}
+canvas.draw{width:100%;height:16rem;border:2px solid var(--line);border-radius:8px;background:#fff;touch-action:none;display:block}
+.status{font-size:.9rem;color:var(--muted)}
+.selfcheck{display:flex;gap:.4rem;flex-wrap:wrap}
+
+dialog{border:2px solid var(--teal);border-radius:var(--r);background:var(--surface);color:var(--ink);max-width:min(30rem,calc(100vw - 32px));padding:1.2rem}
+dialog::backdrop{background:rgba(5,20,25,.55)}
+footer{border-top:1px solid var(--line);padding-block:1.5rem 2rem;color:var(--muted);font-size:.9rem}
+footer .wrap{display:flex;flex-direction:column;gap:.5rem}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+@media (max-width:760px){
+  .hero,.sim{grid-template-columns:minmax(0,1fr)}
+  .fig .row{grid-template-columns:6.5rem minmax(0,1fr) 5rem}
+  .ladder{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+:root[data-motion="off"] *{transition:none!important;animation:none!important}
+</style>
+
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="Finanzas a tu manera, inicio">
+      <svg class="coin" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#0b7a70"/><ellipse cx="16" cy="12" rx="8" ry="3" fill="#f2a33a"/><path d="M8 12v4c0 1.7 3.6 3 8 3s8-1.3 8-3v-4" fill="#f2a33a"/><path d="M8 17v4c0 1.7 3.6 3 8 3s8-1.3 8-3v-4" fill="#e08e1f"/></svg>
+      Finanzas a tu manera
+    </a>
+    <div class="a11y" role="toolbar" aria-label="Ajustes de accesibilidad">
+      <button class="chip" id="a-menos" type="button" aria-label="Reducir tamaño de letra">A−</button>
+      <button class="chip" id="a-mas" type="button" aria-label="Aumentar tamaño de letra">A+</button>
+      <button class="chip" id="a-oscuro" type="button" aria-pressed="false">Modo oscuro</button>
+      <button class="chip" id="a-contraste" type="button" aria-pressed="false">Alto contraste</button>
+      <button class="chip" id="a-espacio" type="button" aria-pressed="false">Espaciado amplio</button>
+      <button class="chip" id="a-mov" type="button" aria-pressed="false">Sin animaciones</button>
+    </div>
+  </div>
+  <div class="progress-strip" role="progressbar" aria-label="Avance del curso" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="pg-global"><span></span></div>
+</header>
+
+<nav class="main" aria-label="Secciones">
+  <div class="wrap"><ul id="navlist"></ul></div>
+</nav>
+
+<main id="contenido" tabindex="-1">
+  <div class="wrap">
+
+    <!-- INICIO -->
+    <section id="v-inicio" aria-labelledby="h-inicio">
+      <div class="hero">
+        <div>
+          <p class="eyebrow">Curso digital de cultura financiera · Prototipo</p>
+          <h1 id="h-inicio">Los mismos temas de dinero, explicados de la forma en que tú aprendes.</h1>
+          <p class="lead">Cuatro módulos cortos sobre presupuesto, ahorro, crédito e inversión. Cada tema lo puedes leer, escuchar, ver en infografía o practicar. Tú eliges el orden y el ritmo.</p>
+        </div>
+        <div class="panel stack" aria-labelledby="h-ruta">
+          <h2 id="h-ruta" style="font-size:1.25rem">¿Cómo prefieres empezar?</h2>
+          <div class="route" id="route">
+            <button type="button" data-fmt="leer" aria-pressed="true"><b>Leer</b><small>Texto corto, paso a paso</small></button>
+            <button type="button" data-fmt="escuchar" aria-pressed="false"><b>Escuchar</b><small>Voz que lee cada paso</small></button>
+            <button type="button" data-fmt="ver" aria-pressed="false"><b>Ver</b><small>Infografía con descripción</small></button>
+            <button type="button" data-fmt="practicar" aria-pressed="false"><b>Practicar</b><small>Preguntas con explicación</small></button>
+          </div>
+          <p class="status">Puedes cambiar de formato en cualquier momento dentro de cada módulo.</p>
+        </div>
+      </div>
+      <h2>Módulos</h2>
+      <div class="modgrid" id="modgrid"></div>
+      <div class="howto">
+        <div><h3>Lecciones de 5 a 7 minutos</h3><p>Pasos numerados, una barra de progreso y una pausa breve entre pasos para no perder la concentración.</p></div>
+        <div><h3>Glosario a un clic</h3><p>Las palabras subrayadas abren su significado con un ejemplo de la vida diaria.</p></div>
+        <div><h3>Sin castigo por equivocarte</h3><p>Cada respuesta incorrecta te explica por qué, y puedes intentarlo otra vez.</p></div>
+        <div><h3>Funciona con teclado</h3><p>Usa Tab para avanzar, Enter para elegir. Compatible con lectores de pantalla.</p></div>
+      </div>
+    </section>
+
+    <!-- MÓDULO (plantilla única que se llena con datos) -->
+    <section id="v-modulo" aria-labelledby="h-mod" hidden>
+      <div class="modhead">
+        <div>
+          <p class="eyebrow" id="mod-eyebrow"></p>
+          <h2 id="h-mod"></h2>
+        </div>
+        <div class="steps" id="steps" aria-label="Pasos del módulo"></div>
+      </div>
+      <div class="stack">
+        <div class="previo">
+          <label for="previo-input" id="previo-q"></label>
+          <textarea id="previo-input" style="min-height:4rem" placeholder="Escribe lo primero que se te ocurra. No hay respuestas incorrectas."></textarea>
+        </div>
+        <div class="panel">
+          <div class="tabs" role="tablist" aria-label="Formato de la lección">
+            <button role="tab" id="t-leer" aria-controls="p-lesson" aria-selected="true" data-fmt="leer">Leer</button>
+            <button role="tab" id="t-escuchar" aria-controls="p-lesson" aria-selected="false" data-fmt="escuchar">Escuchar</button>
+            <button role="tab" id="t-ver" aria-controls="p-lesson" aria-selected="false" data-fmt="ver">Ver</button>
+            <button role="tab" id="t-practicar" aria-controls="p-lesson" aria-selected="false" data-fmt="practicar">Practicar</button>
+          </div>
+          <div id="p-lesson" class="lesson" role="tabpanel" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIMULADOR -->
+    <section id="v-simulador" aria-labelledby="h-sim" hidden>
+      <p class="eyebrow">Práctica · Módulo 1</p>
+      <h2 id="h-sim">Simulador de presupuesto</h2>
+      <p class="read" style="margin-block:.6rem 1.2rem;color:var(--muted)">Los montos de ejemplo son de un estudiante con trabajo de medio tiempo. Cámbialos por los tuyos. Nada se envía a ningún lado; todo se calcula en tu navegador.</p>
+      <div class="sim">
+        <div class="panel">
+          <div class="field" style="border-bottom:2px solid var(--teal)">
+            <label for="ingreso"><b>Ingreso mensual</b><small>Sueldo, beca, mesada</small></label>
+            <input id="ingreso" type="number" inputmode="decimal" min="0" step="50" value="6000">
+          </div>
+          <div id="gastos"></div>
+          <button class="btn ghost" type="button" id="add-gasto" style="margin-top:.8rem">Agregar gasto</button>
+        </div>
+        <div class="stack">
+          <div class="panel" aria-live="polite">
+            <p class="eyebrow">Te queda al mes</p>
+            <p class="big num" id="sobra">$0</p>
+            <p id="sobra-msg" class="status"></p>
+          </div>
+          <div class="panel">
+            <h3 style="margin-bottom:.4rem">Tu presupuesto contra la guía 50/30/20</h3>
+            <p class="status" style="margin-bottom:.8rem">50% necesidades, 30% gustos, 20% ahorro. Es una referencia, no una regla.</p>
+            <figure class="fig" id="fig-503020" style="margin:0"></figure>
+            <p class="altbox" id="alt-503020"></p>
+          </div>
+          <div class="panel">
+            <h3>¿Atorado? Pide una pista</h3>
+            <div class="hints" style="margin-block:.6rem">
+              <button class="btn ghost" type="button" data-hint="0">Pista 1</button>
+              <button class="btn ghost" type="button" data-hint="1">Pista 2</button>
+              <button class="btn ghost" type="button" data-hint="2">Ejemplo resuelto</button>
+            </div>
+            <div id="hint-out" class="tip" aria-live="polite">Las pistas van de lo general a lo concreto. Empieza por la 1.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GLOSARIO -->
+    <section id="v-glosario" aria-labelledby="h-gl" hidden>
+      <p class="eyebrow">Consulta</p>
+      <h2 id="h-gl" style="margin-bottom:1rem">Glosario</h2>
+      <label for="gl-buscar" class="sr">Buscar en el glosario</label>
+      <input id="gl-buscar" type="search" placeholder="Buscar palabra…" style="width:100%;max-width:24rem;padding:.6rem;border:2px solid var(--line);border-radius:8px;background:var(--surface);margin-bottom:1rem">
+      <dl class="gl" id="gl-list"></dl>
+    </section>
+
+    <!-- BITÁCORA -->
+    <section id="v-bitacora" aria-labelledby="h-bit" hidden>
+      <p class="eyebrow">Reflexión</p>
+      <h2 id="h-bit">Bitácora</h2>
+      <p class="read" style="margin-block:.6rem 1.2rem;color:var(--muted)">Al cerrar cada módulo: ¿qué aprendí y cómo lo voy a usar con mi dinero? Responde como te sea más cómodo. Se guarda solo en este navegador.</p>
+      <div class="panel stack">
+        <div>
+          <label for="bit-mod"><b>Módulo</b></label><br>
+          <select id="bit-mod" style="padding:.5rem;border:2px solid var(--line);border-radius:8px;background:var(--bg);margin-top:.3rem"></select>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Forma de responder">
+          <button role="tab" aria-selected="true" data-bm="escribir" id="bt-escribir" aria-controls="bp">Escribir</button>
+          <button role="tab" aria-selected="false" data-bm="dibujar" id="bt-dibujar" aria-controls="bp">Dibujar</button>
+          <button role="tab" aria-selected="false" data-bm="audio" id="bt-audio" aria-controls="bp">Audio</button>
+        </div>
+        <div id="bp" role="tabpanel">
+          <div data-pane="escribir">
+            <label for="bit-text" class="sr">Tu reflexión</label>
+            <textarea id="bit-text" placeholder="Hoy aprendí que… y lo voy a usar para…"></textarea>
+          </div>
+          <div data-pane="dibujar" hidden>
+            <canvas class="draw" id="bit-canvas" aria-label="Área para dibujar tu reflexión. También puedes escribirla en la pestaña Escribir."></canvas>
+            <div class="ctrl-row"><button class="btn ghost" type="button" id="draw-clear">Borrar dibujo</button></div>
+          </div>
+          <div data-pane="audio" hidden class="stack">
+            <p>Graba una nota de voz con tu celular y súbela aquí.</p>
+            <label for="bit-audio" class="sr">Subir audio</label>
+            <input id="bit-audio" type="file" accept="audio/*">
+            <audio id="bit-player" controls hidden></audio>
+          </div>
+        </div>
+        <div>
+          <p style="font-weight:700;margin-bottom:.4rem">¿Qué tan claro te quedó este módulo?</p>
+          <div class="selfcheck" id="selfcheck">
+            <button class="btn ghost" type="button" data-v="1" aria-pressed="false">Todavía con dudas</button>
+            <button class="btn ghost" type="button" data-v="2" aria-pressed="false">Más o menos</button>
+            <button class="btn ghost" type="button" data-v="3" aria-pressed="false">Muy claro</button>
+          </div>
+        </div>
+        <div class="ctrl-row"><button class="btn" type="button" id="bit-save">Guardar reflexión</button><span class="status" id="bit-status" aria-live="polite"></span></div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<dialog id="term-dialog" aria-labelledby="td-title">
+  <h3 id="td-title"></h3>
+  <p id="td-def" style="margin-top:.5rem"></p>
+  <p id="td-ex" class="tip" style="margin-top:.8rem"></p>
+  <div class="ctrl-row"><button class="btn" type="button" id="td-close">Entendido</button></div>
+</dialog>
+
+<footer>
+  <div class="wrap">
+    <p><b>Finanzas a tu manera</b> © 2026 por Elizabeth Bravo Méndez, Alberto López Correa, Sebastián Vizcayno Martínez y Nancy Jocelyn Aguilar Hernández.</p>
+    <p>Bajo licencia <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener" target="_blank">Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)</a>.</p>
+    <p>Educación para la Diversidad · Tecnológico de Monterrey. Diseñado con las pautas del Diseño Universal para el Aprendizaje (CAST) y WCAG 2.1. Contenido educativo; no es asesoría financiera.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var store={get:function(k,d){try{var v=localStorage.getItem("fatm:"+k);return v?JSON.parse(v):d}catch(e){return d}},
+           set:function(k,v){try{localStorage.setItem("fatm:"+k,JSON.stringify(v));return true}catch(e){return false}}};
+var mxn=function(n){return (n<0?"−":"")+"$"+Math.abs(Math.round(n)).toLocaleString("es-MX")};
+
+/* ---------- Glosario ---------- */
+var GLOSARIO={
+  "presupuesto":["Plan que dice cuánto dinero entra y en qué lo vas a usar durante un periodo.","Si recibes $6,000 al mes, tu presupuesto reparte esos $6,000 entre transporte, comida, ahorro y gustos."],
+  "ingreso":["Todo el dinero que recibes: sueldo, beca, mesada o ventas.","La beca de $2,500 más tu trabajo de $3,500 suman un ingreso de $6,000."],
+  "gasto fijo":["Gasto que se repite y casi no cambia cada mes.","El plan del celular de $300 o la renta."],
+  "gasto variable":["Gasto que cambia según lo que hagas.","Salidas con amigos, antojos, ropa."],
+  "necesidad":["Algo sin lo que no puedes funcionar bien.","Transporte a la escuela, comida, útiles."],
+  "gusto":["Algo que te hace la vida más agradable, pero podrías dejarlo un tiempo.","Una suscripción de streaming o un café de especialidad."],
+  "ahorro":["Parte de tu ingreso que guardas para usarla después.","Separar $600 cada mes para un fondo de emergencias."],
+  "fondo de emergencia":["Ahorro reservado solo para imprevistos.","Que se descomponga tu celular o tengas que ir al doctor."],
+  "interés":["Lo que cuesta usar dinero ajeno, o lo que ganas por prestar el tuyo. Se expresa en porcentaje.","Si ahorras $1,000 al 10% anual, al año te pagan $100."],
+  "interés compuesto":["Cuando los intereses ganados también empiezan a generar intereses.","Año 1: $1,000 → $1,100. Año 2 se calcula sobre $1,100, no sobre $1,000."],
+  "inflación":["Aumento general de los precios con el tiempo. Hace que el mismo dinero alcance para menos.","Si los precios suben 5% en un año, lo que costaba $100 ahora cuesta $105."],
+  "crédito":["Dinero que te prestan hoy y que pagas después, normalmente con intereses.","Una tarjeta de crédito o un préstamo para una laptop."],
+  "CAT":["Costo Anual Total. Junta intereses y comisiones de un crédito en un solo porcentaje para compararlo con otros.","Entre dos tarjetas, la de CAT más bajo te cuesta menos."],
+  "pago mínimo":["Lo menos que puedes pagar de tu tarjeta para no caer en atraso. Casi todo se va en intereses.","Pagar solo el mínimo puede hacer que una deuda chica dure años."],
+  "meses sin intereses":["Compra que se divide en pagos iguales sin cobrar interés, si pagas a tiempo.","Una laptop de $12,000 a 12 MSI son $1,000 al mes."],
+  "historial crediticio":["Registro de cómo has pagado tus créditos. Lo consultan antes de prestarte.","Pagar a tiempo hoy te ayuda a conseguir mejores créditos después."],
+  "inversión":["Poner tu dinero en algo con la expectativa de que crezca.","Comprar instrumentos de deuda del gobierno o acciones de una empresa."],
+  "riesgo":["Posibilidad de que una inversión gane menos de lo esperado o pierda valor.","Una acción puede subir o bajar mucho; un pagaré bancario casi no cambia."],
+  "rendimiento":["Lo que gana una inversión, expresado en porcentaje.","Si inviertes $1,000 y al año tienes $1,080, el rendimiento fue 8%."],
+  "diversificar":["Repartir tu dinero en varias inversiones para no depender de una sola.","No poner todos los huevos en la misma canasta."]
+};
+
+/* ---------- Contenido de los módulos ---------- */
+var MODS=[
+ {id:"dinero",n:1,titulo:"Dinero y presupuesto",color:"teal",min:6,
+  previo:"¿Sabes en qué se fue tu dinero la semana pasada? Escribe tres cosas en las que gastaste.",
+  pasos:[
+   {t:"Primero, saber cuánto entra",p:["Un [[presupuesto]] empieza por tu [[ingreso]]: todo lo que recibes en un mes. Súmalo aunque venga de varias partes.","Si tu ingreso cambia cada mes, usa el mes más bajo de los últimos tres. Así no planeas con dinero que quizá no llegue."],tip:"Anota tu ingreso del mes en una línea. Solo un número."},
+   {t:"Luego, ver en qué se va",p:["Divide tus gastos en dos: [[gasto fijo]], que se repite igual cada mes, y [[gasto variable]], que cambia según lo que hagas.","Revisar los movimientos de tu app del banco de una semana ya te da una idea bastante buena."],tip:"Los gastos pequeños y frecuentes (antojos, apps) son los que más se nos olvidan."},
+   {t:"Separar necesidades de gustos",p:["Una [[necesidad]] es lo que te permite funcionar: transporte, comida, escuela. Un [[gusto]] te hace la vida más agradable, pero podrías pausarlo.","No se trata de eliminar los gustos. Se trata de decidir cuánto les toca."],tip:"Una guía común es 50/30/20: 50% necesidades, 30% gustos, 20% ahorro."},
+   {t:"Probar y ajustar",p:["Tu primer presupuesto no va a salir perfecto, y está bien. Úsalo un mes, compara lo planeado contra lo real y ajusta.","El objetivo es que al final del mes te quede algo, aunque sea poco, para [[ahorro]]."],tip:"Abre el simulador de presupuesto y prueba con tus números.",link:"simulador"}
+  ],
+  ver:"pres",
+  quiz:[
+   {nivel:"Básico",q:"¿Cuál de estos es un gasto fijo?",o:["El plan del celular de cada mes","Unos tacos con amigos","Una playera en oferta"],ok:0,e:"El plan del celular se repite igual cada mes. Los tacos y la playera dependen de lo que decidas ese día."},
+   {nivel:"Intermedio",q:"Recibes $6,000 al mes. Según la guía 50/30/20, ¿cuánto iría a ahorro?",o:["$600","$1,200","$3,000"],ok:1,e:"El 20% de $6,000 es $1,200. $3,000 sería la parte de necesidades (50%)."},
+   {nivel:"Reto",q:"Tu ingreso varía: $5,000, $7,500 y $6,200 en los últimos tres meses. ¿Con cuál conviene planear?",o:["$7,500, el más alto","$6,233, el promedio","$5,000, el más bajo"],ok:2,e:"Planear con el más bajo evita contar con dinero que quizá no llegue. Lo que sobre en meses buenos va directo al ahorro."}
+  ]},
+ {id:"ahorro",n:2,titulo:"Ahorro e interés",color:"slate",min:6,
+  previo:"Piensa en algo que quisiste comprar y no te alcanzó. ¿Cuánto costaba y cuánto tiempo te habría tomado juntarlo?",
+  pasos:[
+   {t:"Ahorrar es pagarte primero",p:["El [[ahorro]] funciona mejor si lo separas en cuanto recibes dinero, no con lo que sobra al final del mes.","Aunque sea poco, la constancia importa más que la cantidad."],tip:"Programa una transferencia automática el día que te pagan."},
+   {t:"Un fondo para imprevistos",p:["Antes de ahorrar para algo grande, arma un [[fondo de emergencia]]. Te evita endeudarte cuando algo sale mal.","Una meta inicial razonable es el equivalente a un mes de tus gastos necesarios."],tip:"Guárdalo en una cuenta separada, para que no se mezcle con el dinero del día a día."},
+   {t:"Qué es el interés",p:["El [[interés]] es el precio del dinero en el tiempo. Si ahorras en una cuenta que paga interés, el banco te paga por usar tu dinero.","Con [[interés compuesto]], los intereses que ganas también generan intereses. Por eso empezar pronto hace diferencia."],tip:"Abre la pestaña Ver para comparar interés simple contra compuesto."},
+   {t:"La inflación se come el dinero quieto",p:["La [[inflación]] hace que el mismo billete alcance para menos cada año.","Si tu ahorro no gana al menos lo que suben los precios, en la práctica pierde valor."],tip:"Compara la tasa que te paga tu cuenta contra la inflación del último año."}
+  ],
+  ver:"interes",
+  quiz:[
+   {nivel:"Básico",q:"¿Cuándo conviene apartar el ahorro?",o:["Al final del mes, con lo que sobre","En cuanto recibes tu dinero","Solo cuando haya una meta"],ok:1,e:"Si lo apartas primero, el ahorro no depende de que algo sobre. Al final del mes casi nunca sobra."},
+   {nivel:"Intermedio",q:"Ahorras $1,000 al 10% anual con interés compuesto. ¿Cuánto tienes al final del año 2?",o:["$1,200","$1,210","$1,100"],ok:1,e:"Año 1: 1,000 × 1.10 = $1,100. Año 2: 1,100 × 1.10 = $1,210. Los $10 extra son intereses sobre intereses."},
+   {nivel:"Reto",q:"Tu cuenta paga 3% al año y la inflación fue 5%. ¿Qué pasó con tu poder de compra?",o:["Subió 3%","Bajó aproximadamente 2%","No cambió"],ok:1,e:"Ganaste 3% pero los precios subieron 5%. Con tu dinero alcanzas a comprar cerca de 2% menos que antes."}
+  ]},
+ {id:"credito",n:3,titulo:"Crédito y deudas",color:"rust",min:7,
+  previo:"¿Alguien en tu casa usa tarjeta de crédito o compra a meses? ¿Qué te han dicho de eso?",
+  pasos:[
+   {t:"El crédito es dinero prestado",p:["Un [[crédito]] te permite comprar hoy y pagar después. Casi siempre cuesta, por los intereses y comisiones.","Usado con un plan, ayuda. Sin plan, se vuelve una deuda que crece."],tip:"Pregúntate: ¿esta compra me va a servir más tiempo del que tardaré en pagarla?"},
+   {t:"Compara con el CAT",p:["El [[CAT]] reúne intereses y comisiones en un porcentaje. Sirve para comparar créditos entre sí.","Entre dos opciones parecidas, la de CAT más bajo te cuesta menos."],tip:"El CAT viene en la publicidad y en el contrato. Si no lo ves, pregúntalo."},
+   {t:"Cuidado con el pago mínimo",p:["El [[pago mínimo]] evita que caigas en atraso, pero casi todo se va en intereses y la deuda baja muy lento.","Las compras a [[meses sin intereses]] no cobran interés solo si pagas cada mensualidad a tiempo."],tip:"Abre la pestaña Ver: compara cuánto tardas en pagar con el mínimo contra un pago mayor."},
+   {t:"Tu historial te sigue",p:["Tu [[historial crediticio]] registra si pagas a tiempo. Lo consultan antes de darte un crédito, un plan de celular o incluso una renta.","Empezar con un crédito pequeño y pagarlo completo cada mes construye un buen historial."],tip:"Pagar el total de la tarjeta antes de la fecha límite no te cobra intereses."}
+  ],
+  ver:"deuda",
+  quiz:[
+   {nivel:"Básico",q:"¿Para qué sirve el CAT?",o:["Para saber tu saldo","Para comparar el costo total de distintos créditos","Para calcular tu ingreso"],ok:1,e:"El CAT junta intereses y comisiones en un solo porcentaje, así puedes comparar créditos entre sí."},
+   {nivel:"Intermedio",q:"Compraste una laptop de $12,000 a 12 meses sin intereses. Si pagas a tiempo, ¿cuánto pagas al mes?",o:["$1,000","$1,200","$12,000"],ok:0,e:"$12,000 entre 12 meses son $1,000. Si te atrasas, pueden cobrarte intereses y comisiones."},
+   {nivel:"Reto",q:"Debes $5,000 en tu tarjeta. ¿Qué te conviene más?",o:["Pagar solo el mínimo y usar el resto en gustos","Pagar lo más que puedas cada mes y no usarla mientras","Abrir otra tarjeta para pagar la primera"],ok:1,e:"Pagar más que el mínimo baja la deuda rápido y reduce los intereses totales. Abrir otra tarjeta solo cambia la deuda de lugar."}
+  ]},
+ {id:"inversion",n:4,titulo:"Inversión básica",color:"plum",min:6,
+  previo:"Si te regalaran $5,000 hoy y no pudieras gastarlos en un año, ¿qué harías con ellos?",
+  pasos:[
+   {t:"Invertir es poner el dinero a trabajar",p:["Una [[inversión]] busca que tu dinero crezca con el tiempo. A diferencia del ahorro en efectivo, puede ganarle a la [[inflación]].","Primero el fondo de emergencia; después, invertir."],tip:"Solo invierte dinero que no vas a necesitar pronto."},
+   {t:"Riesgo y rendimiento van juntos",p:["El [[rendimiento]] es lo que gana una inversión. El [[riesgo]] es la posibilidad de que gane menos o pierda.","Por lo general, más rendimiento posible viene con más riesgo. Nadie puede garantizarte ganancias altas sin riesgo."],tip:"Si alguien te promete ganancias altas y seguras, desconfía."},
+   {t:"No todo en un solo lugar",p:["[[diversificar]] es repartir tu dinero en distintas inversiones. Si una baja, las demás amortiguan.","El tiempo también ayuda: el [[interés compuesto]] trabaja más entre más años dejes el dinero."],tip:"Abre la pestaña Ver para ver la escalera de riesgo."},
+   {t:"Por dónde empezar",p:["Para empezar existen opciones de bajo riesgo y montos pequeños, como instrumentos de deuda del gobierno o pagarés bancarios.","Antes de invertir, revisa que la institución esté regulada y lee las comisiones."],tip:"Este curso es educativo. Para decisiones grandes, busca asesoría profesional."}
+  ],
+  ver:"riesgo",
+  quiz:[
+   {nivel:"Básico",q:"¿Qué conviene tener antes de empezar a invertir?",o:["Un fondo de emergencia","Una tarjeta de crédito","Un celular nuevo"],ok:0,e:"El fondo de emergencia evita que tengas que sacar tu inversión antes de tiempo cuando surge un imprevisto."},
+   {nivel:"Intermedio",q:"Inviertes $1,000 y al año tienes $1,080. ¿Cuál fue el rendimiento?",o:["80%","8%","1.08%"],ok:1,e:"Ganaste $80 sobre $1,000. 80 ÷ 1,000 = 0.08, es decir, 8%."},
+   {nivel:"Reto",q:"Te ofrecen 30% de ganancia mensual garantizada. ¿Qué haces?",o:["Invierto todo, es buena oportunidad","Desconfío: no existe rendimiento alto garantizado","Invierto la mitad para probar"],ok:1,e:"Rendimientos altos garantizados son señal típica de fraude. Más rendimiento siempre implica más riesgo."}
+  ]}
+];
+var COLORS={teal:"var(--teal)",slate:"var(--slate)",rust:"var(--rust)",plum:"var(--plum)"};
+
+/* ---------- Estado ---------- */
+var state={fmt:store.get("fmt","leer"),done:store.get("done",{}),step:{},level:{}};
+
+/* ---------- Navegación ---------- */
+var NAV=[["inicio","Inicio"]].concat(MODS.map(function(m){return [m.id,m.n+". "+m.titulo]})).concat([["simulador","Simulador"],["glosario","Glosario"],["bitacora","Bitácora"]]);
+$("#navlist").innerHTML=NAV.map(function(n){return '<li><a href="#'+n[0]+'" data-r="'+n[0]+'">'+n[1]+'</a></li>'}).join("");
+
+function route(){
+  var h=(location.hash||"#inicio").slice(1); var mod=MODS.filter(function(m){return m.id===h})[0];
+  if(!mod && ["inicio","simulador","glosario","bitacora"].indexOf(h)<0) h="inicio";
+  $$("main section").forEach(function(s){s.hidden=true});
+  if(mod){ $("#v-modulo").hidden=false; renderMod(mod); } else { $("#v-"+h).hidden=false; }
+  if(h==="inicio") renderHome();
+  if(h==="bitacora") setTimeout(sizeCanvas,0);
+  $$("#navlist a").forEach(function(a){ if(a.dataset.r===h) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
+  stopSpeech();
+}
+window.addEventListener("hashchange",function(){route(); var m=$("#contenido"); m.focus({preventScroll:true}); window.scrollTo(0,0);});
+
+/* ---------- Progreso ---------- */
+function modDone(m){return (state.done[m.id]||[]).length}
+function updateGlobal(){
+  var total=0,done=0; MODS.forEach(function(m){total+=m.pasos.length+1; done+=Math.min(modDone(m),m.pasos.length+1)});
+  var pct=Math.round(done/total*100); var pg=$("#pg-global"); pg.setAttribute("aria-valuenow",pct); pg.firstElementChild.style.width=pct+"%";
+}
+function markDone(m,i){var a=state.done[m.id]||[]; if(a.indexOf(i)<0){a.push(i); state.done[m.id]=a; store.set("done",state.done); updateGlobal();}}
+
+/* ---------- Inicio ---------- */
+function renderHome(){
+  $("#modgrid").innerHTML=MODS.map(function(m){
+    var tot=m.pasos.length+1, d=Math.min(modDone(m),tot), pct=Math.round(d/tot*100);
+    return '<a class="modcard c-'+m.color+'" href="#'+m.id+'"><span class="eyebrow">Módulo '+m.n+' · '+m.min+' min</span><h3>'+m.titulo+'</h3>'+
+      '<span class="meta">'+(d===0?"Sin empezar":d===tot?"Completado":d+" de "+tot+" pasos")+'</span>'+
+      '<span class="bar" aria-hidden="true"><span style="width:'+pct+'%"></span></span></a>';
+  }).join("");
+  $$("#route button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.fmt===state.fmt))});
+}
+$("#route").addEventListener("click",function(e){var b=e.target.closest("button"); if(!b)return; state.fmt=b.dataset.fmt; store.set("fmt",state.fmt); renderHome();});
+
+/* ---------- Texto con glosario ---------- */
+function rich(t){return t.replace(/\[\[([^\]]+)\]\]/g,function(_,w){var k=Object.keys(GLOSARIO).filter(function(g){return g.toLowerCase()===w.toLowerCase()})[0]||w;return '<button type="button" class="term" data-term="'+k+'">'+w+'</button>'});}
+function plain(t){return t.replace(/\[\[([^\]]+)\]\]/g,"$1")}
+document.addEventListener("click",function(e){var b=e.target.closest(".term"); if(!b)return; openTerm(b.dataset.term);});
+function openTerm(k){var g=GLOSARIO[k]; if(!g)return; $("#td-title").textContent=k.charAt(0).toUpperCase()+k.slice(1); $("#td-def").textContent=g[0]; $("#td-ex").innerHTML="<b>Ejemplo</b>"+g[1]; var d=$("#term-dialog"); if(d.showModal){d.showModal()} else {d.setAttribute("open","")}}
+$("#td-close").addEventListener("click",function(){$("#term-dialog").close()});
+
+/* ---------- Módulo ---------- */
+var cur=null;
+function renderMod(m){
+  cur=m; if(state.step[m.id]==null) state.step[m.id]=0;
+  $("#mod-eyebrow").textContent="Módulo "+m.n+" de 4 · "+m.min+" minutos";
+  $("#h-mod").textContent=m.titulo;
+  $("#previo-q").textContent="¿Qué sabes ya? "+m.previo;
+  var pv=store.get("previo",{}); $("#previo-input").value=pv[m.id]||"";
+  renderSteps(); setFmt(state.fmt);
+}
+$("#previo-input").addEventListener("input",function(){var pv=store.get("previo",{}); pv[cur.id]=this.value; store.set("previo",pv);});
+function renderSteps(){
+  var m=cur, s=state.step[m.id], d=state.done[m.id]||[];
+  var html=m.pasos.map(function(p,i){return '<button type="button" data-s="'+i+'" aria-label="Paso '+(i+1)+': '+p.t+(d.indexOf(i)>=0?" (completado)":"")+'" '+(i===s&&state.fmt!=="practicar"?'aria-current="step"':'')+' class="'+(d.indexOf(i)>=0?"done":"")+'">'+(i+1)+'</button>'}).join("");
+  html+='<button type="button" data-s="q" aria-label="Práctica final'+(d.indexOf(m.pasos.length)>=0?" (completada)":"")+'" '+(state.fmt==="practicar"?'aria-current="step"':'')+' class="'+(d.indexOf(m.pasos.length)>=0?"done":"")+'">✓</button>';
+  $("#steps").innerHTML=html;
+}
+$("#steps").addEventListener("click",function(e){var b=e.target.closest("button"); if(!b)return; if(b.dataset.s==="q"){setFmt("practicar")} else { state.step[cur.id]=+b.dataset.s; if(state.fmt==="practicar") setFmt("leer"); else renderLesson(); renderSteps(); }});
+$$('.tabs[aria-label="Formato de la lección"] [role="tab"]').forEach(function(t){t.addEventListener("click",function(){setFmt(t.dataset.fmt)}); t.addEventListener("keydown",tabKeys)});
+function tabKeys(e){var tabs=$$('[role="tab"]',e.target.parentNode),i=tabs.indexOf(e.target);if(e.key==="ArrowRight"||e.key==="ArrowLeft"){e.preventDefault();var n=tabs[(i+(e.key==="ArrowRight"?1:-1)+tabs.length)%tabs.length];n.focus();n.click();}}
+function setFmt(f){state.fmt=f; store.set("fmt",f); $$('.tabs[aria-label="Formato de la lección"] [role="tab"]').forEach(function(t){var on=t.dataset.fmt===f;t.setAttribute("aria-selected",String(on));t.tabIndex=on?0:-1}); $("#p-lesson").setAttribute("aria-labelledby","t-"+f); stopSpeech(); renderLesson(); renderSteps();}
+
+function stepNav(m,s){
+  var last=s===m.pasos.length-1;
+  return '<div class="ctrl-row"><button class="btn ghost" type="button" data-go="prev" '+(s===0?"disabled":"")+'>Paso anterior</button>'+
+    '<button class="btn" type="button" data-go="next">'+(last?"Ir a la práctica":"Listo, siguiente paso")+'</button>'+
+    '<span class="status num">Paso '+(s+1)+' de '+m.pasos.length+'</span></div>';
+}
+function renderLesson(){
+  var m=cur, s=state.step[m.id], p=m.pasos[s], box=$("#p-lesson");
+  if(state.fmt==="practicar"){ renderQuiz(m); return; }
+  if(state.fmt==="ver"){
+    box.innerHTML='<p class="eyebrow">Infografía · El video con subtítulos se integra en la versión final</p>'+infographic(m)+stepNav(m,s); return;
+  }
+  var body='<h3>'+(s+1)+'. '+p.t+'</h3>'+p.p.map(function(x){return '<p>'+rich(x)+'</p>'}).join("")+
+    '<div class="tip"><b>Tip</b>'+p.tip+(p.link?' <a href="#'+p.link+'">Abrir simulador</a>':'')+'</div>';
+  if(state.fmt==="escuchar"){
+    body='<div class="ctrl-row" style="margin-top:0;margin-bottom:1rem"><button class="btn" type="button" id="play">▶ Escuchar este paso</button><button class="btn ghost" type="button" id="stop">Detener</button>'+
+      '<label class="status" for="rate">Velocidad</label><select id="rate" style="padding:.4rem;border:1px solid var(--line);border-radius:6px;background:var(--bg)"><option value="0.8">Lenta</option><option value="1" selected>Normal</option><option value="1.25">Rápida</option></select></div>'+
+      '<p class="eyebrow" style="margin-bottom:.6rem">Transcripción</p>'+body;
+  }
+  box.innerHTML=body+stepNav(m,s);
+  if(state.fmt==="escuchar"){
+    $("#play").addEventListener("click",function(){speak(p.t+". "+p.p.map(plain).join(" ")+" Tip: "+p.tip,+$("#rate").value)});
+    $("#stop").addEventListener("click",stopSpeech);
+  }
+}
+$("#p-lesson").addEventListener("click",function(e){
+  var b=e.target.closest("[data-go]"); if(!b)return; var m=cur,s=state.step[m.id];
+  if(b.dataset.go==="prev"){state.step[m.id]=Math.max(0,s-1); renderLesson(); renderSteps(); return;}
+  if(b.dataset.go==="next"){ markDone(m,s); showPause(m,s); }
+  if(b.dataset.go==="continue"){ if(s<m.pasos.length-1){state.step[m.id]=s+1; renderLesson();} else setFmt("practicar"); renderSteps(); }
+});
+function showPause(m,s){
+  stopSpeech();
+  var reduced=document.documentElement.dataset.motion==="off";
+  $("#p-lesson").innerHTML='<div class="pause" role="status"><div class="ring num" aria-hidden="true">'+(s+1)+'/'+m.pasos.length+'</div><div><b>Pausa corta.</b><p>Respira hondo una vez. Si quieres, anota en una frase lo que acabas de aprender.</p></div></div>'+
+   '<div class="ctrl-row"><button class="btn" type="button" data-go="continue">'+(s<m.pasos.length-1?"Continuar":"Ir a la práctica")+'</button></div>';
+  renderSteps(); var c=$('[data-go="continue"]'); if(c) c.focus();
+}
+
+/* ---------- Voz ---------- */
+function speak(text,rate){
+  try{ if(!("speechSynthesis" in window)) throw 0; speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(text); u.lang="es-MX"; u.rate=rate||1;
+    var v=speechSynthesis.getVoices().filter(function(x){return /^es/i.test(x.lang)}); if(v.length) u.voice=v.filter(function(x){return /MX|US|419/.test(x.lang)})[0]||v[0];
+    speechSynthesis.speak(u);
+  }catch(e){ var t=$("#p-lesson .eyebrow"); if(t) t.textContent="Tu navegador no tiene lectura en voz alta. Puedes leer la transcripción o usar tu lector de pantalla."; }
+}
+function stopSpeech(){try{speechSynthesis.cancel()}catch(e){}}
+
+/* ---------- Infografías ---------- */
+function bars(rows,cap,alt){
+  var max=Math.max.apply(null,rows.map(function(r){return r.v}));
+  return '<figure class="fig" style="margin:0" aria-describedby="alt-fig">'+rows.map(function(r){
+    return '<div class="row"><span>'+r.l+'</span><span class="track" aria-hidden="true"><span class="fill" style="display:block;width:'+(r.v/max*100)+'%;background:'+r.c+'"></span></span><span class="val num">'+(r.f||mxn(r.v))+'</span></div>'}).join("")+
+    '<figcaption>'+cap+'</figcaption></figure><p class="altbox" id="alt-fig"><b>Descripción:</b> '+alt+'</p>';
+}
+function monthsToPay(debt,rate,pay){var m=0,paid=0;while(debt>0.5&&m<600){debt=debt*(1+rate);var p=Math.min(pay,debt);debt-=p;paid+=p;m++;}return {m:m,paid:paid}}
+function infographic(m){
+  if(m.ver==="pres"){
+    return '<h3 style="margin-bottom:.8rem">Un ingreso de $6,000 repartido con la guía 50/30/20</h3>'+
+     bars([{l:"Necesidades",v:3000,c:"var(--teal)"},{l:"Gustos",v:1800,c:"var(--slate)"},{l:"Ahorro",v:1200,c:"var(--gold)"}],
+     "Ejemplo con un ingreso mensual de $6,000.","Tres barras. Necesidades $3,000, la mitad del ingreso. Gustos $1,800, el 30%. Ahorro $1,200, el 20%.");
+  }
+  if(m.ver==="interes"){
+    var rows=[],alt=[];
+    for(var y=1;y<=5;y++){var s=1000+100*y,c=1000*Math.pow(1.1,y); rows.push({l:"Año "+y+" simple",v:s,c:"var(--slate)",f:"$"+s.toLocaleString("es-MX")}); rows.push({l:"Año "+y+" compuesto",v:c,c:"var(--gold)",f:"$"+c.toLocaleString("es-MX",{maximumFractionDigits:2})}); alt.push("año "+y+": simple $"+s.toLocaleString("es-MX")+", compuesto $"+c.toLocaleString("es-MX",{maximumFractionDigits:2}));}
+    return '<h3 style="margin-bottom:.8rem">$1,000 al 10% anual: simple contra compuesto</h3>'+bars(rows,"El interés compuesto crece más rápido porque cada año se calcula sobre el total acumulado.","Comparación por año, "+alt.join("; ")+".");
+  }
+  if(m.ver==="deuda"){
+    var a=monthsToPay(5000,0.04,250), b=monthsToPay(5000,0.04,1000);
+    return '<h3 style="margin-bottom:.8rem">Deuda de $5,000 con 4% de interés mensual (ejemplo)</h3>'+
+     bars([{l:"Pagando $250",v:a.m,c:"var(--rust)",f:a.m+" meses"},{l:"Pagando $1,000",v:b.m,c:"var(--teal)",f:b.m+" meses"}],
+      "Pagando $250 al mes terminas pagando "+mxn(a.paid)+" en total. Pagando $1,000, pagas "+mxn(b.paid)+".",
+      "Con pagos de $250 tardas "+a.m+" meses y pagas "+mxn(a.paid)+". Con pagos de $1,000 tardas "+b.m+" meses y pagas "+mxn(b.paid)+". La tasa es un ejemplo para comparar.");
+  }
+  return '<h3 style="margin-bottom:.8rem">Escalera de riesgo</h3><div class="ladder" aria-hidden="true">'+
+    '<div style="height:4rem;background:var(--teal)">Cuenta de ahorro</div><div style="height:6rem;background:var(--slate)">Deuda del gobierno</div><div style="height:8rem;background:var(--plum)">Fondos diversificados</div><div style="height:10rem;background:var(--rust)">Acciones individuales</div></div>'+
+    '<p class="altbox" style="margin-top:.8rem"><b>Descripción:</b> Cuatro escalones de menor a mayor riesgo y rendimiento posible: cuenta de ahorro, deuda del gobierno, fondos diversificados y acciones individuales. Subir un escalón puede dar más rendimiento, pero también más variación.</p>';
+}
+
+/* ---------- Práctica ---------- */
+function renderQuiz(m){
+  var lv=state.level[m.id]||0, q=m.quiz[lv];
+  $("#p-lesson").innerHTML='<p class="eyebrow">Práctica final · Elige tu nivel</p><div class="levels">'+
+    m.quiz.map(function(x,i){return '<button type="button" class="btn '+(i===lv?"":"ghost")+'" data-lv="'+i+'" aria-pressed="'+(i===lv)+'">'+x.nivel+'</button>'}).join("")+'</div>'+
+    '<form class="q" id="qform"><fieldset><legend>'+q.q+'</legend>'+q.o.map(function(o,i){return '<label class="opt" for="o'+i+'"><input type="radio" name="q" id="o'+i+'" value="'+i+'"><span>'+o+'</span></label>'}).join("")+
+    '</fieldset><div class="ctrl-row"><button class="btn" type="submit">Revisar respuesta</button></div></form><div id="qfb" aria-live="assertive"></div>';
+  $$("[data-lv]").forEach(function(b){b.addEventListener("click",function(){state.level[m.id]=+b.dataset.lv; renderQuiz(m)})});
+  $("#qform").addEventListener("submit",function(e){
+    e.preventDefault(); var sel=$("input[name=q]:checked"); var fb=$("#qfb");
+    if(!sel){fb.innerHTML='<div class="feedback no"><strong>Elige una opción para revisar.</strong></div>';return;}
+    var v=+sel.value, ok=v===q.ok;
+    $$(".opt").forEach(function(o,i){o.classList.remove("right","wrong"); if(i===q.ok&&ok)o.classList.add("right"); if(i===v&&!ok)o.classList.add("wrong")});
+    if(ok){ markDone(m,m.pasos.length); renderSteps();
+      fb.innerHTML='<div class="feedback ok"><strong>Correcto.</strong><p>'+q.e+'</p></div><div class="ctrl-row">'+(lv<m.quiz.length-1?'<button class="btn" type="button" id="next-lv">Probar el nivel '+m.quiz[lv+1].nivel.toLowerCase()+'</button>':'')+'<a class="btn ghost" href="#bitacora" style="text-decoration:none">Escribir en la bitácora</a></div>';
+      var n=$("#next-lv"); if(n) n.addEventListener("click",function(){state.level[m.id]=lv+1; renderQuiz(m)});
+    } else {
+      fb.innerHTML='<div class="feedback no"><strong>Todavía no. Vale la pena revisarlo:</strong><p>'+q.e+'</p><p style="margin-top:.4rem">Intenta otra vez cuando quieras.</p></div>';
+    }
+  });
+}
+
+/* ---------- Simulador ---------- */
+var DEF=[["Transporte",900,"n"],["Comida",1800,"n"],["Plan de celular",300,"n"],["Escuela y útiles",500,"n"],["Salidas y antojos",900,"g"],["Suscripciones",250,"g"],["Ahorro",600,"a"]];
+var gastos=store.get("gastos",null)||DEF.map(function(d){return {n:d[0],v:d[1],t:d[2]}});
+$("#ingreso").value=store.get("ingreso",6000);
+function renderGastos(){
+  $("#gastos").innerHTML=gastos.map(function(g,i){
+    return '<div class="field"><label for="g'+i+'"><span>'+g.n+'</span><small>'+({n:"Necesidad",g:"Gusto",a:"Ahorro"})[g.t]+'</small></label>'+
+      '<input id="g'+i+'" data-i="'+i+'" type="number" inputmode="decimal" min="0" step="50" value="'+g.v+'">'+
+      '<select aria-label="Tipo de '+g.n+'" data-ti="'+i+'"><option value="n"'+(g.t==="n"?" selected":"")+'>Necesidad</option><option value="g"'+(g.t==="g"?" selected":"")+'>Gusto</option><option value="a"'+(g.t==="a"?" selected":"")+'>Ahorro</option></select></div>'}).join("");
+}
+function calc(){
+  var ing=Math.max(0,+$("#ingreso").value||0), t={n:0,g:0,a:0}; gastos.forEach(function(g){t[g.t]+=Math.max(0,+g.v||0)});
+  var total=t.n+t.g+t.a, sobra=ing-total;
+  $("#sobra").textContent=mxn(sobra); $("#sobra").style.color=sobra<0?"var(--bad)":"var(--ink)";
+  $("#sobra-msg").textContent= ing===0?"Escribe tu ingreso para empezar.": sobra<0?"Gastas más de lo que recibes. Revisa primero los gustos.": sobra===0?"Todo tu ingreso tiene un destino. Buen trabajo.":"Ese sobrante puede ir a tu ahorro o fondo de emergencia.";
+  var p=function(x){return ing?x/ing*100:0};
+  var rows=[["Necesidades",t.n,50,"var(--teal)"],["Gustos",t.g,30,"var(--slate)"],["Ahorro",t.a,20,"var(--gold)"]];
+  $("#fig-503020").innerHTML=rows.map(function(r){var pc=p(r[1]);return '<div class="row"><span>'+r[0]+' <span class="status num">(guía '+r[2]+'%)</span></span><span class="track" aria-hidden="true" style="position:relative"><span class="fill" style="display:block;width:'+Math.min(100,pc)+'%;background:'+r[3]+'"></span><span style="position:absolute;top:-3px;bottom:-3px;left:'+r[2]+'%;width:2px;background:var(--ink)"></span></span><span class="val num">'+pc.toFixed(0)+'%</span></div>'}).join("")+
+    '<figcaption class="legend"><span><i style="background:var(--ink);width:2px"></i>Línea = porcentaje de la guía</span></figcaption>';
+  $("#alt-503020").innerHTML="<b>Descripción:</b> "+rows.map(function(r){return r[0]+" "+p(r[1]).toFixed(0)+"% de tu ingreso ("+mxn(r[1])+"), la guía sugiere "+r[2]+"%"}).join("; ")+".";
+  store.set("gastos",gastos); store.set("ingreso",ing);
+  return {ing:ing,t:t,sobra:sobra};
+}
+$("#gastos").addEventListener("input",function(e){var i=e.target.dataset.i; if(i!=null){gastos[i].v=+e.target.value||0; calc();}});
+$("#gastos").addEventListener("change",function(e){var i=e.target.dataset.ti; if(i!=null){gastos[i].t=e.target.value; renderGastos(); calc();}});
+$("#ingreso").addEventListener("input",calc);
+$("#add-gasto").addEventListener("click",function(){gastos.push({n:"Otro gasto "+(gastos.length+1),v:0,t:"g"}); renderGastos(); calc(); $("#g"+(gastos.length-1)).focus();});
+$$("[data-hint]").forEach(function(b){b.addEventListener("click",function(){
+  var r=calc(), h=+b.dataset.hint, out=$("#hint-out");
+  var H=[
+    "Mira la barra que más se pasa de su línea. Ahí está tu primera oportunidad de ajuste.",
+    r.t.g/(r.ing||1)>0.3?"Tus gustos pasan del 30%. Revisa salidas y suscripciones: ¿hay alguna que puedas pausar un mes?":r.t.a/(r.ing||1)<0.2?"Tu ahorro está debajo del 20%. Si te sobra dinero, súmalo al renglón de Ahorro.":"Vas bien con la guía. Revisa si tus necesidades realmente lo son.",
+    "Ejemplo: con $6,000, si bajas Salidas de $900 a $600 y cancelas una suscripción de $250, liberas $550. Sumados a los $600 de Ahorro llegas a $1,150, casi el 20% ($1,200)."
+  ]; out.innerHTML="<b>Pista "+(h+1)+"</b>"+H[h];
+})});
+
+/* ---------- Glosario ---------- */
+function renderGl(f){
+  f=(f||"").toLowerCase();
+  $("#gl-list").innerHTML=Object.keys(GLOSARIO).sort(function(a,b){return a.localeCompare(b,"es")}).filter(function(k){return !f||k.toLowerCase().indexOf(f)>=0||GLOSARIO[k][0].toLowerCase().indexOf(f)>=0}).map(function(k){
+    return '<div><dt>'+k.charAt(0).toUpperCase()+k.slice(1)+'</dt><dd>'+GLOSARIO[k][0]+'<p class="ex">Ejemplo: '+GLOSARIO[k][1]+'</p></dd></div>'}).join("")||'<p class="status">No encontré esa palabra. Prueba con otra.</p>';
+}
+$("#gl-buscar").addEventListener("input",function(){renderGl(this.value)});
+
+/* ---------- Bitácora ---------- */
+$("#bit-mod").innerHTML=MODS.map(function(m){return '<option value="'+m.id+'">'+m.n+'. '+m.titulo+'</option>'}).join("");
+var bitMode="escribir", selfv=null, cv=$("#bit-canvas"), ctx=cv.getContext("2d"), drawing=false;
+function sizeCanvas(){var r=cv.getBoundingClientRect(); if(!r.width)return; var img=null; try{img=cv.toDataURL()}catch(e){} cv.width=r.width*devicePixelRatio; cv.height=r.height*devicePixelRatio; ctx.scale(devicePixelRatio,devicePixelRatio); ctx.lineWidth=3; ctx.lineCap="round"; ctx.strokeStyle="#0f2b33"; loadBit();}
+function pos(e){var r=cv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top]}
+cv.addEventListener("pointerdown",function(e){drawing=true;cv.setPointerCapture(e.pointerId);var p=pos(e);ctx.beginPath();ctx.moveTo(p[0],p[1])});
+cv.addEventListener("pointermove",function(e){if(!drawing)return;var p=pos(e);ctx.lineTo(p[0],p[1]);ctx.stroke()});
+cv.addEventListener("pointerup",function(){drawing=false});
+$("#draw-clear").addEventListener("click",function(){ctx.clearRect(0,0,cv.width,cv.height)});
+$$('[data-bm]').forEach(function(t){t.addEventListener("keydown",tabKeys);t.addEventListener("click",function(){bitMode=t.dataset.bm;$$('[data-bm]').forEach(function(x){var on=x===t;x.setAttribute("aria-selected",String(on));x.tabIndex=on?0:-1});$$("[data-pane]").forEach(function(p){p.hidden=p.dataset.pane!==bitMode}); $("#bp").setAttribute("aria-labelledby",t.id); if(bitMode==="dibujar")sizeCanvas();})});
+$("#bit-audio").addEventListener("change",function(){var f=this.files[0]; if(!f)return; var pl=$("#bit-player"); pl.src=URL.createObjectURL(f); pl.hidden=false; $("#bit-status").textContent="Audio cargado: "+f.name+". Escúchalo para revisarlo.";});
+$("#selfcheck").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;selfv=+b.dataset.v;$$("#selfcheck button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b));x.classList.toggle("ghost",x!==b)})});
+function loadBit(){var all=store.get("bitacora",{}),b=all[$("#bit-mod").value]||{}; $("#bit-text").value=b.text||""; selfv=b.self||null;
+  $$("#selfcheck button").forEach(function(x){var on=+x.dataset.v===selfv;x.setAttribute("aria-pressed",String(on));x.classList.toggle("ghost",!on)});
+  var r=cv.getBoundingClientRect(); ctx.clearRect(0,0,r.width||cv.width,r.height||cv.height); if(b.draw){var im=new Image();im.onload=function(){ctx.drawImage(im,0,0,r.width,r.height)};im.src=b.draw;}}
+$("#bit-mod").addEventListener("change",loadBit);
+$("#bit-save").addEventListener("click",function(){
+  var all=store.get("bitacora",{}), d=null; try{d=cv.toDataURL("image/png")}catch(e){}
+  all[$("#bit-mod").value]={text:$("#bit-text").value,self:selfv,draw:d,fecha:new Date().toISOString()};
+  var ok=store.set("bitacora",all);
+  $("#bit-status").textContent= ok?"Guardado en este navegador.":"No se pudo guardar en este navegador (modo privado o almacenamiento bloqueado). Copia tu texto antes de salir.";
+});
+
+/* ---------- Accesibilidad ---------- */
+var root=document.documentElement, prefs=store.get("a11y",{scale:1,dark:null,hc:false,sp:false,mo:false});
+function applyA11y(){
+  root.style.setProperty("--scale",prefs.scale);
+  if(prefs.dark===true) root.setAttribute("data-theme","dark"); else if(prefs.dark===false) root.setAttribute("data-theme","light");
+  if(prefs.hc) root.setAttribute("data-contrast","high"); else root.removeAttribute("data-contrast");
+  root.style.setProperty("--track",prefs.sp?".04":"0"); root.style.setProperty("--word",prefs.sp?".12":"0"); root.style.setProperty("--lead",prefs.sp?"1.9":"1.6");
+  if(prefs.mo) root.setAttribute("data-motion","off"); else root.removeAttribute("data-motion");
+  var isDark=root.getAttribute("data-theme")==="dark"||(!root.getAttribute("data-theme")&&matchMedia("(prefers-color-scheme: dark)").matches);
+  $("#a-oscuro").setAttribute("aria-pressed",String(isDark)); $("#a-contraste").setAttribute("aria-pressed",String(prefs.hc));
+  $("#a-espacio").setAttribute("aria-pressed",String(prefs.sp)); $("#a-mov").setAttribute("aria-pressed",String(prefs.mo));
+  store.set("a11y",prefs);
+}
+$("#a-mas").addEventListener("click",function(){prefs.scale=Math.min(2,+(prefs.scale+0.125).toFixed(3));applyA11y()});
+$("#a-menos").addEventListener("click",function(){prefs.scale=Math.max(0.875,+(prefs.scale-0.125).toFixed(3));applyA11y()});
+$("#a-oscuro").addEventListener("click",function(){prefs.dark=$("#a-oscuro").getAttribute("aria-pressed")!=="true";applyA11y()});
+$("#a-contraste").addEventListener("click",function(){prefs.hc=!prefs.hc;applyA11y()});
+$("#a-espacio").addEventListener("click",function(){prefs.sp=!prefs.sp;applyA11y()});
+$("#a-mov").addEventListener("click",function(){prefs.mo=!prefs.mo;applyA11y()});
+
+/* ---------- Arranque ---------- */
+applyA11y(); renderGastos(); calc(); renderGl(""); updateGlobal(); route();
+})();
+</script>
+
+</body>
+</html>
